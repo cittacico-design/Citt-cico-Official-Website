@@ -4,6 +4,49 @@
   var products = window.CITTACICO_PRODUCTS || [];
   var CART_KEY = "cittacico-cart-v1";
   var ORDER_KEY = "cittacico-last-order";
+  var reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function ensureAtmosphereUi() {
+    if (!document.querySelector(".noise-overlay")) {
+      var noise = document.createElement("div");
+      noise.className = "noise-overlay";
+      noise.setAttribute("aria-hidden", "true");
+      document.body.prepend(noise);
+    }
+    if (!document.querySelector(".page-loader")) {
+      var loader = document.createElement("div");
+      loader.className = "page-loader";
+      loader.setAttribute("aria-hidden", "true");
+      loader.innerHTML =
+        '<div class="page-loader-inner">' +
+        '<span class="page-loader-mark">CITTÀCICO</span>' +
+        '<span class="page-loader-line"></span>' +
+        "</div>";
+      document.body.prepend(loader);
+    }
+  }
+
+  function initPageLoader() {
+    ensureAtmosphereUi();
+    var loader = document.querySelector(".page-loader");
+    if (!loader) return;
+    if (reduceMotion) {
+      loader.classList.add("is-done");
+      return;
+    }
+    document.body.classList.add("is-loading");
+    var hide = function () {
+      loader.classList.add("is-done");
+      document.body.classList.remove("is-loading");
+      document.body.classList.add("is-revealed");
+    };
+    window.setTimeout(hide, 900);
+    window.addEventListener("load", function () {
+      window.setTimeout(hide, 180);
+    });
+  }
+
+  initPageLoader();
 
   function formatPrice(value) {
     return new Intl.NumberFormat("en-US", {
@@ -138,7 +181,7 @@
         '<div class="bag-items"></div>' +
         '<div class="bag-foot">' +
         '<div class="bag-subtotal"><span>Subtotal</span><strong>$0</strong></div>' +
-        '<p class="bag-note">Prototype checkout — card data is not processed.</p>' +
+        '<p class="bag-note">Secure checkout · Complimentary shipping on all orders.</p>' +
         '<button type="button" class="bag-checkout">Proceed to checkout</button>' +
         "</div>" +
         "</aside>";
@@ -227,7 +270,9 @@
     root.innerHTML = products
       .map(function (product) {
         return (
-          '<article class="shop-card reveal">' +
+          '<article class="shop-card reveal" data-collection="' +
+          product.collection +
+          '">' +
           '<a class="shop-card-media" href="product.html?slug=' +
           product.slug +
           '">' +
@@ -313,7 +358,7 @@
       '">Add to Bag</button>' +
       '<a class="product-link-alt" href="shop.html">Continue shopping</a>' +
       "</div>" +
-      '<p class="product-prototype-note">Prototype only — this product detail page and bag are for concept testing.</p>' +
+      '<p class="product-prototype-note">Complimentary shipping · Client advisory available upon request.</p>' +
       "</div>" +
       "</div>" +
       "</div>" +
@@ -824,16 +869,21 @@
 
   /* Intersection Observer — reveal */
   var revealEls = document.querySelectorAll(".reveal");
-  if (revealEls.length && "IntersectionObserver" in window) {
+  if (revealEls.length && "IntersectionObserver" in window && !reduceMotion) {
     var io = new IntersectionObserver(
       function (entries) {
         entries.forEach(function (entry) {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
+            if (entry.target.classList.contains("editorial-break")) {
+              entry.target.classList.add("is-kenburns");
+            }
+            var stagger = entry.target.querySelector(".stagger-children");
+            if (stagger) stagger.classList.add("is-visible");
           }
         });
       },
-      { rootMargin: "-10% 0px -10% 0px", threshold: 0 }
+      { rootMargin: "-8% 0px -8% 0px", threshold: 0.08 }
     );
     revealEls.forEach(function (el) {
       io.observe(el);
@@ -842,7 +892,68 @@
     revealEls.forEach(function (el) {
       el.classList.add("is-visible");
     });
+    document.querySelectorAll(".stagger-children").forEach(function (el) {
+      el.classList.add("is-visible");
+    });
   }
+
+  /* Parallax — hero media */
+  function initParallax() {
+    if (reduceMotion) return;
+    var layers = document.querySelectorAll("[data-parallax]");
+    if (!layers.length) return;
+    var latestY = 0;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var y = latestY;
+      layers.forEach(function (layer) {
+        var shift = Math.min(y * 0.22, 140);
+        layer.style.transform = "translate3d(0, " + shift + "px, 0)";
+      });
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        latestY = window.scrollY || 0;
+        if (!ticking) {
+          ticking = true;
+          requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+  }
+  initParallax();
+
+  /* Magnetic soft pull on primary CTAs */
+  function initMagnetic() {
+    if (reduceMotion || !prefersFinePointer) return;
+    document.querySelectorAll(".btn-primary, .nav-shop, .link-gold").forEach(function (el) {
+      el.addEventListener("mousemove", function (e) {
+        var rect = el.getBoundingClientRect();
+        var x = e.clientX - rect.left - rect.width / 2;
+        var y = e.clientY - rect.top - rect.height / 2;
+        el.style.transform = "translate(" + x * 0.12 + "px, " + y * 0.18 + "px)";
+      });
+      el.addEventListener("mouseleave", function () {
+        el.style.transform = "";
+      });
+    });
+  }
+  initMagnetic();
+
+  /* Smooth anchor scroll for in-page links */
+  document.querySelectorAll('a[href^="#"]').forEach(function (anchor) {
+    anchor.addEventListener("click", function (e) {
+      var id = anchor.getAttribute("href");
+      if (!id || id === "#") return;
+      var target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
+    });
+  });
 
   /* Contact form — no backend */
   var form = document.querySelector(".contact-form");
