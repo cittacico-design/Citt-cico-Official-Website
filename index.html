@@ -25,15 +25,22 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Outfit:wght@300;400;500&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
+    <div class="page-loader" aria-hidden="true">
+      <div class="page-loader-inner">
+        <span class="page-loader-mark">CITTÀCICO</span>
+        <span class="page-loader-line"></span>
+      </div>
+    </div>
     <div class="scroll-progress" aria-hidden="true"></div>
     <div class="custom-cursor custom-cursor-dot" aria-hidden="true"></div>
     <div class="custom-cursor custom-cursor-ring" aria-hidden="true"></div>
+    <div class="noise-overlay" aria-hidden="true"></div>
 
     <header class="site-header">
       <div class="header-util">
@@ -154,24 +161,35 @@
 
     <main>
       <section class="hero">
+        <div class="hero-media" data-parallax aria-hidden="true">
+          <div class="hero-media-layer hero-media-layer--base"></div>
+          <div class="hero-media-layer hero-media-layer--glow"></div>
+          <div class="hero-media-layer hero-media-layer--vignette"></div>
+        </div>
         <div class="hero-line" aria-hidden="true"></div>
         <div class="hero-inner">
           <h1 class="hero-title">
             <span class="sr-only">CITTÀCICO</span>
-            <span aria-hidden="true">
-              <span class="char" style="animation-delay: 0.5s">C</span>
-              <span class="char" style="animation-delay: 0.57s">I</span>
-              <span class="char" style="animation-delay: 0.64s">T</span>
-              <span class="char" style="animation-delay: 0.71s">T</span>
-              <span class="char" style="animation-delay: 0.78s">À</span>
-              <span class="char" style="animation-delay: 0.85s">C</span>
-              <span class="char" style="animation-delay: 0.92s">I</span>
-              <span class="char" style="animation-delay: 0.99s">C</span>
-              <span class="char" style="animation-delay: 1.06s">O</span>
+            <span aria-hidden="true" class="hero-title-chars">
+              <span class="char" style="--i: 0">C</span>
+              <span class="char" style="--i: 1">I</span>
+              <span class="char" style="--i: 2">T</span>
+              <span class="char" style="--i: 3">T</span>
+              <span class="char" style="--i: 4">À</span>
+              <span class="char" style="--i: 5">C</span>
+              <span class="char" style="--i: 6">I</span>
+              <span class="char" style="--i: 7">C</span>
+              <span class="char" style="--i: 8">O</span>
             </span>
           </h1>
-          <p class="hero-tagline">Where Legacy Meets Desire</p>
-          <div class="hero-divider" aria-hidden="true"></div>
+          <p class="hero-tagline">Where legacy meets desire</p>
+          <p class="hero-lede">
+            Fashion, objets, and fragrance — composed with patience, worn with intention.
+          </p>
+          <div class="hero-cta">
+            <a class="btn-primary" href="collections.html">Explore Collections</a>
+            <a class="btn-ghost" href="shop.html">Enter the Boutique</a>
+          </div>
         </div>
         <div class="hero-scroll" aria-hidden="true">
           <span>Scroll</span>
@@ -183,45 +201,57 @@
         <div class="home-grid-shell">
           <div class="home-grid-head">
             <span class="section-kicker">Discover</span>
-            <h2 id="shop-by-category-title">Shop by Category</h2>
+            <h2 id="shop-by-category-title">Universes of the Maison</h2>
           </div>
-          <div class="category-grid">
+          <div class="category-grid stagger-children">
             <a class="category-card" href="collection-fashion.html">
               <span class="category-card-media category-card-media--bag" aria-hidden="true"></span>
-              <span class="category-card-title">Women's Bags</span>
+              <span class="category-card-meta">
+                <span class="category-card-title">Fashion</span>
+                <span class="category-card-hint">Ready-to-wear</span>
+              </span>
             </a>
             <a class="category-card" href="collection-accessories.html">
               <span class="category-card-media category-card-media--small-leather" aria-hidden="true"></span>
-              <span class="category-card-title">Small Leather Goods</span>
+              <span class="category-card-meta">
+                <span class="category-card-title">Accessories</span>
+                <span class="category-card-hint">Leather &amp; objects</span>
+              </span>
             </a>
-            <a class="category-card" href="collection-accessories.html">
+            <a class="category-card" href="collection-fragrance.html">
               <span class="category-card-media category-card-media--belt" aria-hidden="true"></span>
-              <span class="category-card-title">Accessories</span>
+              <span class="category-card-meta">
+                <span class="category-card-title">Fragrance</span>
+                <span class="category-card-hint">Parfums de maison</span>
+              </span>
             </a>
             <a class="category-card" href="shop.html">
               <span class="category-card-media category-card-media--shoe" aria-hidden="true"></span>
-              <span class="category-card-title">Shoes</span>
+              <span class="category-card-meta">
+                <span class="category-card-title">Boutique</span>
+                <span class="category-card-hint">Shop the edit</span>
+              </span>
             </a>
           </div>
         </div>
       </section>
 
       <section class="editorial-break editorial-break--forest reveal" aria-labelledby="editorial-forest-title">
-        <div class="editorial-break-media" aria-hidden="true"></div>
+        <div class="editorial-break-media" data-kenburns aria-hidden="true"></div>
         <div class="editorial-break-overlay"></div>
         <div class="editorial-break-content">
-          <span class="section-kicker">Editorial Moment</span>
-          <h2 id="editorial-forest-title">A silhouette in motion, framed like a campaign.</h2>
+          <span class="section-kicker">Campaign</span>
+          <h2 id="editorial-forest-title">A silhouette in motion</h2>
           <p>
-            This is a full-width photo section ready for a large model image. Replace the
-            placeholder background with your own campaign photography whenever you are ready.
+            Soft light, deliberate form — the season’s first chapter, framed like a private viewing.
           </p>
+          <a class="link-gold" href="archives.html">View the archives</a>
         </div>
       </section>
 
       <section class="collection-panel even reveal">
         <div class="collection-panel-bg"></div>
-        <div class="collection-visual">
+        <div class="collection-visual collection-visual--fashion">
           <span class="collection-big-letter" aria-hidden="true">F</span>
         </div>
         <div class="collection-content">
@@ -245,11 +275,10 @@
             <span class="section-kicker">New</span>
             <h2 id="new-arrivals-title">Spring 2026 Highlights</h2>
             <p class="section-intro">
-              A product-style section inspired by luxury storefronts, designed for spotlighting
-              hero pieces between editorial moments.
+              Hero pieces from the atelier — selected for presence, proportion, and lasting wear.
             </p>
           </div>
-          <div class="product-grid">
+          <div class="product-grid stagger-children">
             <article class="product-tile">
               <a class="product-tile-media product-tile-media--look-1" href="product.html" aria-label="View Atelier Silk Jacket"></a>
               <div class="product-tile-body">
@@ -280,14 +309,14 @@
             </article>
           </div>
           <div class="section-cta-row">
-            <a class="section-pill-link" href="shop.html">Shop Now</a>
+            <a class="btn-ghost" href="shop.html">Shop the Edit</a>
           </div>
         </div>
       </section>
 
       <section class="collection-panel odd reveal">
         <div class="collection-panel-bg"></div>
-        <div class="collection-visual">
+        <div class="collection-visual collection-visual--accessories">
           <span class="collection-big-letter" aria-hidden="true">A</span>
         </div>
         <div class="collection-content">
@@ -306,22 +335,22 @@
       </section>
 
       <section class="editorial-break editorial-break--studio reveal" aria-labelledby="editorial-studio-title">
-        <div class="editorial-break-media" aria-hidden="true"></div>
+        <div class="editorial-break-media" data-kenburns aria-hidden="true"></div>
         <div class="editorial-break-overlay"></div>
         <div class="editorial-break-content editorial-break-content--right">
-          <span class="section-kicker">Campaign Story</span>
-          <h2 id="editorial-studio-title">Insert another full-screen model image between collections.</h2>
+          <span class="section-kicker">Atelier</span>
+          <h2 id="editorial-studio-title">Light, texture, and quiet drama</h2>
           <p>
-            These large in-between sections help the homepage feel more editorial and luxurious,
-            similar to the rhythm on fashion house landing pages.
+            Between collections, a moment of atmosphere — the house speaking in tone and shadow.
           </p>
+          <a class="link-gold" href="about.html">The House story</a>
         </div>
       </section>
 
       <section class="collection-panel even reveal">
         <div class="collection-panel-bg"></div>
-        <div class="collection-visual">
-          <span class="collection-big-letter" aria-hidden="true">F</span>
+        <div class="collection-visual collection-visual--fragrance">
+          <span class="collection-big-letter" aria-hidden="true">S</span>
         </div>
         <div class="collection-content">
           <div class="collection-text">
@@ -334,6 +363,20 @@
             <a class="link-gold" href="collection-fragrance.html"
               >Explore Collection</a
             >
+          </div>
+        </div>
+      </section>
+
+      <section class="home-invite reveal" aria-labelledby="invite-title">
+        <div class="home-invite-inner">
+          <span class="section-kicker">Private Appointment</span>
+          <h2 id="invite-title">Experience the maison in person</h2>
+          <p>
+            From boutique fittings to fragrance consultations — our client advisors are at your service.
+          </p>
+          <div class="hero-cta hero-cta--center">
+            <a class="btn-primary" href="client-services.html">Client Services</a>
+            <a class="btn-ghost" href="locations.html">Find a Location</a>
           </div>
         </div>
       </section>
