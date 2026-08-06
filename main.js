@@ -270,7 +270,9 @@
     root.innerHTML = products
       .map(function (product) {
         return (
-          '<article class="shop-card reveal">' +
+          '<article class="shop-card reveal" data-collection="' +
+          product.collection +
+          '">' +
           '<a class="shop-card-media" href="product.html?slug=' +
           product.slug +
           '">' +
